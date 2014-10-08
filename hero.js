@@ -80,30 +80,30 @@
 // };
 
 // // The "Safe Diamond Miner"
-var move = function(gameData, helpers) {
-  var myHero = gameData.activeHero;
+// var move = function(gameData, helpers) {
+//   var myHero = gameData.activeHero;
 
-  //Get stats on the nearest health well
-  var healthWellStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(boardTile) {
-    if (boardTile.type === 'HealthWell') {
-      return true;
-    }
-  });
-  var distanceToHealthWell = healthWellStats.distance;
-  var directionToHealthWell = healthWellStats.direction;
+//   //Get stats on the nearest health well
+//   var healthWellStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(boardTile) {
+//     if (boardTile.type === 'HealthWell') {
+//       return true;
+//     }
+//   });
+//   var distanceToHealthWell = healthWellStats.distance;
+//   var directionToHealthWell = healthWellStats.direction;
   
 
-  if (myHero.health < 40) {
-    //Heal no matter what if low health
-    return directionToHealthWell;
-  } else if (myHero.health < 100 && distanceToHealthWell === 1) {
-    //Heal if you aren't full health and are close to a health well already
-    return directionToHealthWell;
-  } else {
-    //If healthy, go capture a diamond mine!
-    return helpers.findNearestNonTeamDiamondMine(gameData);
-  }
-};
+//   if (myHero.health < 40) {
+//     //Heal no matter what if low health
+//     return directionToHealthWell;
+//   } else if (myHero.health < 100 && distanceToHealthWell === 1) {
+//     //Heal if you aren't full health and are close to a health well already
+//     return directionToHealthWell;
+//   } else {
+//     //If healthy, go capture a diamond mine!
+//     return helpers.findNearestNonTeamDiamondMine(gameData);
+//   }
+// };
 
 // // The "Selfish Diamond Miner"
 // // This hero will attempt to capture diamond mines (even those owned by teammates).
@@ -137,6 +137,37 @@ var move = function(gameData, helpers) {
 // var move = function(gameData, helpers) {
 //   return helpers.findNearestHealthWell(gameData);
 // }
+
+var move = function(gameData, helpers){
+  var myHero = gameData.activeHero;
+  var directions = ['North', 'East', 'South', 'West'];
+
+  var healthWellStats = helpers.findNearestHealthWell(gameData);
+  var nearestEnemyStats = helpers.findNearestEnemy(gameData);
+  var nearestWeakerEnemyStats = helpers.findNearestWeakerEnemy(gameData);
+  var dmStats = helpers.findNearestNonTeamDiamondMine(gameData);
+  var teamStats = helpers.findNearestTeamMember(gameData);
+
+
+  if(myHero.health < 60)
+    return healthWellStats.direction;
+  else if(myHero.health < 100 && healthWellStats.distance === 1)
+    return healthWellStats.direction;
+  else if(nearestEnemyStats.distance === 1)
+    return nearestEnemyStats.direction;
+  else if(dmStats.distance === 1)
+    return dmStats.direction;
+  else if(teamStats.distance === 1)
+    return teamStats.direction;
+  else if(nearestWeakerEnemyStats.direction)
+    return nearestWeakerEnemyStats.direction;
+  else if(myHero.health < 100)
+    return healthWellStats.direction;
+  else if(dmStats.direction)
+    return dmStats.direction;
+  else
+    return directions[Math.floor(Math.random()*4)]; // keep him moving
+};
 
 
 // Export the move function here

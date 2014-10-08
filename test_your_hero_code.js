@@ -56,7 +56,7 @@ console.log('About to start the game!  Here is what the board looks like:');
 game.board.inspect();
 
 //Play a very short practice game
-var turnsToPlay = 15;
+var turnsToPlay = 100;
 
 for (var i=0; i<turnsToPlay; i++) {
   var hero = game.activeHero;
@@ -72,8 +72,8 @@ for (var i=0; i<turnsToPlay; i++) {
   console.log('Turn ' + i + ':');
   console.log('-----');
   console.log(hero.name + ' tried to move ' + direction);
-  console.log(hero.name + ' owns ' + hero.mineCount + ' diamond mines')
-  console.log(hero.name + ' has ' + hero.health + ' health')
+  console.log(hero.name + ' owns ' + hero.mineCount + ' diamond mines');
+  console.log(hero.name + ' has ' + hero.health + ' health');
   game.handleHeroTurn(direction);
   game.board.inspect();
 }
