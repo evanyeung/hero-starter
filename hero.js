@@ -140,7 +140,12 @@
 
 var move = function(gameData, helpers){
   var myHero = gameData.activeHero;
-  var directions = ['North', 'East', 'South', 'West'];
+  var directions = [
+    'North',
+    'East',
+    'South',
+    'West',
+  ];
 
   var healthWellStats = helpers.findNearestHealthWell(gameData);
   var nearestEnemyStats = helpers.findNearestEnemy(gameData);
@@ -148,8 +153,7 @@ var move = function(gameData, helpers){
   var dmStats = helpers.findNearestNonTeamDiamondMine(gameData);
   var teamStats = helpers.findNearestTeamMember(gameData);
 
-
-  if(myHero.health < 50 && healthWellStats.direction)
+  if(myHero.health < 60 && healthWellStats.direction)
     direction = healthWellStats.direction;
   else if(myHero.health < 100 && healthWellStats.distance === 1 && healthWellStats.direction)
     direction = healthWellStats.direction;
