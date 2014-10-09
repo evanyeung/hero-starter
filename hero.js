@@ -149,7 +149,7 @@ var move = function(gameData, helpers){
   var teamStats = helpers.findNearestTeamMember(gameData);
 
 
-  if(myHero.health < 60 && healthWellStats.direction)
+  if(myHero.health < 50 && healthWellStats.direction)
     direction = healthWellStats.direction;
   else if(myHero.health < 100 && healthWellStats.distance === 1 && healthWellStats.direction)
     direction = healthWellStats.direction;
