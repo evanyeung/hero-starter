@@ -149,24 +149,31 @@ var move = function(gameData, helpers){
   var teamStats = helpers.findNearestTeamMember(gameData);
 
 
-  if(myHero.health < 60)
-    return healthWellStats.direction;
-  else if(myHero.health < 100 && healthWellStats.distance === 1)
-    return healthWellStats.direction;
-  else if(nearestEnemyStats.distance === 1)
-    return nearestEnemyStats.direction;
-  else if(dmStats.distance === 1)
-    return dmStats.direction;
-  else if(teamStats.distance === 1)
-    return teamStats.direction;
-  else if(nearestWeakerEnemyStats.direction)
-    return nearestWeakerEnemyStats.direction;
-  else if(myHero.health < 100)
-    return healthWellStats.direction;
+  if(myHero.health < 60 && healthWellStats.direction)
+    direction = healthWellStats.direction;
+  else if(myHero.health < 100 && healthWellStats.distance === 1 && healthWellStats.direction)
+    direction = healthWellStats.direction;
+  else if(nearestEnemyStats.distance === 1 && nearestEnemyStats.direction)
+    direction = nearestEnemyStats.direction;
+  else if(dmStats.distance === 1 && dmStats.direction)
+    direction = dmStats.direction;
+  else if(teamStats.distance === 1 && teamStats.direction)
+    direction = teamStats.direction;
+  else if(nearestWeakerEnemyStats.direction && nearestWeakerEnemyStats.direction)
+    direction = nearestWeakerEnemyStats.direction;
+  else if(myHero.health < 100 && healthWellStats.direction)
+    direction = healthWellStats.direction;
   else if(dmStats.direction)
-    return dmStats.direction;
+    direction = dmStats.direction;
+  else
+    direction = directions[Math.floor(Math.random()*4)]; // keep him moving
+  if(directions.indexOf(direction) !== -1) // just to be sure
+	return direction;
   else
     return directions[Math.floor(Math.random()*4)]; // keep him moving
+
+  //TODO: make a better pathfinding algorithm
+  //run away from enemies intelligently (if <60 health but will win keep fighting)
 };
 
 
